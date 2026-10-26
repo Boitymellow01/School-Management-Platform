@@ -40,7 +40,7 @@ router.put("/", auth(["admin", "teacher"]), wrap(async (req, res) => {
   const valid = new Set((await Student.find({ class: cls }).select("_id")).map((s) => String(s._id)));
   const clean = records.filter((r) => valid.has(String(r.student)) && ["present", "absent", "late"].includes(r.status))
     .map((r) => ({ student: r.student, status: r.status }));
-  const doc = await Attendance.findOneAndUpdate({ class: cls, date }, { records: clean }, { upsert: true, new: true, setDefaultsOnInsert: true });
+  const doc = await Attendance.findOneAndUpdate({ class: cls, date }, { records: clean }, { upsert: true, returnDocument: "after", setDefaultsOnInsert: true });
   res.json(doc);
 }));
 

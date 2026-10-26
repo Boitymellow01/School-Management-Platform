@@ -35,7 +35,7 @@ router.put("/:id", auth(["admin"]), wrap(async (req, res) => {
   if (name) update.name = name;
   if (grade !== undefined) update.grade = grade;
   if (teacher !== undefined) update.teacher = teacher || null;
-  const c = await Class.findByIdAndUpdate(req.params.id, update, { new: true, runValidators: true });
+  const c = await Class.findByIdAndUpdate(req.params.id, update, { returnDocument: "after", runValidators: true });
   if (!c) return res.status(404).json({ message: "Not found" });
   res.json(c);
 }));
